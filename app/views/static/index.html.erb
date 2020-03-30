@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Flashback</title>
+    <script src="https://unpkg.com/@babel/standalone@7.2.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.0.0/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.0.0/umd/react-dom.development.js"></script>
+
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type='text/babel'>
+      
+      const cardData = importedFlashCardDataFile;
+
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            cardData: []
+          };
+        }
+
+        componentDidMount() {
+          this.setState({ cardData: cardData });
+        }
+
+        shuffleBackwards = () => {
+          const { cardData } = this.state;
+          const newCardData = [cardData[6], ...cardData.slice(0,6)];
+          this.setState({ cardData: newCardData });
+          
+        }
+        
+        shuffleForwards = () => {
+          const { cardData } = this.state;
+          const newCardData = [...cardData.slice(1), cardData[0]];
+          this.setState({ cardData: newCardData });
+        }
+
+        render() {
+          return (
+            <div className='App'>
+              <h1 className='title'>
+                Flashback
+              </h1>
+              <p className='sub-title'>
+                An interactive flashcard app.
+              </p>
+              <div className='card-list'>
+                {this.state.cardData.map((card, index) => <Card key={index} index={index} front={card.front} back={card.back} />)}
+              </div>
+              <div className='buttons'>
+                <button onClick={() => this.shuffleBackwards()}>
+                  &lt;
+                </button>
+                <button onClick={() => this.shuffleForwards()}>
+                  &gt;
+                </button>
+              </div>
+            </div>
+          );
+        }
+      }
+
+      class Card extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            flipped: false
+          };
+        }
+
+        componentDidUpdate (prevProps, prevState) {
+          if (prevState.flipped === true) {
+            this.setState({ flipped: false });
+          }
+        }
+
+        flipCard = () => {
+          if (this.props.index === 0) {
+            this.setState({ flipped: !this.state.flipped });
+          }
+        }
+        
+        cardClass = () => this.state.flipped ? 'Card -back' : 'Card -front';
+
+        render() {
+          return (
+            <div className={this.cardClass()} onClick={() => this.flipCard()}>
+              {!this.state.flipped ?
+                <div className='front'>
+                  <h3 className='question'>
+                    {this.props.front.question}
+                  </h3>
+                  <p className='hint'>
+                    <span>Hint: </span>
+                    {this.props.front.hint}
+                  </p>
+                </div>
+                :
+                <div className='back'>
+                  <div className='image'>
+                    <img src={this.props.back.image} />
+                  </div>
+                  <h3 className='answer'>
+                    {this.props.back.answer}
+                  </h3>
+                  <p className='description'>
+                    {this.props.back.description}
+                  </p>
+                </div>
+              }
+            </div>
+          );
+        }
+      }
+      
+      ReactDOM.render(<App />, document.getElementById('app'));
+      
+    </script>
+  </body>
+</html>
