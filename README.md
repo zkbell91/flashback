@@ -1,24 +1,13 @@
-# README
+![Sample Page](screenshot.png)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Flashback
 
-Things you may want to cover:
+A flashcard app designed using React.js. A single-page app that allows the user to scroll through flashcards and flip them for the answer to questions about React.
 
-* Ruby version
+## Built With
 
-* System dependencies
+* React
 
-* Configuration
+## Acknowledgments
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* [The Firehose Project](https://thefirehoseproject.com)
